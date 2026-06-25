@@ -1,0 +1,10 @@
+# Universal system definition
+# [who] needs a way to [do something] b/c [current limitation], resulting in [neg consequence]
+
+name: Job Search
+
+problem:
+  who: Matt
+  needs: efficiently find and secure employment
+  because: the job search process is fragmented and largely manual
+  resulting_in: wasted time and missed opportunities

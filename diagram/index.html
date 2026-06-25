@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Job Search — System Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2b2b2b;
+    --paper:#fbf6ea;
+    --rule:#e3dcc8;
+    --margin:#e8b4b8;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0;
+    padding:0;
+    background-color:var(--paper);
+    background-image:linear-gradient(to bottom, transparent 13px, var(--rule) 14px);
+    background-size:100% 14px;
+    color:var(--ink);
+    font-family:'Caveat','Comic Sans MS',cursive;
+  }
+  .margin-line{
+    position:fixed;
+    top:0; bottom:0; left:26px;
+    width:1.5px;
+    background:var(--margin);
+    opacity:.6;
+    z-index:0;
+  }
+  @media (max-width:760px){ .margin-line{ display:none; } }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:920px;
+    margin:0 auto;
+    padding:16px 14px 26px;
+  }
+
+  header{ text-align:center; margin-bottom:6px; }
+  h1{
+    font-family:'Patrick Hand',cursive;
+    font-size:1.05rem;
+    margin:0;
+    transform:rotate(-0.6deg);
+  }
+  .subtitle{
+    font-size:0.62rem;
+    margin:1px 0 0;
+    color:#555;
+  }
+  .underline{ display:block; margin:3px auto 0; width:110px; }
+
+  .flow{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0;
+    margin-top:10px;
+  }
+  .flow-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:0;
+  }
+  .step{ flex:0 0 auto; width:118px; }
+  .h-connector{ flex:0 0 auto; }
+
+  .card{
+    background:#fffdf7;
+    border:1.5px solid var(--ink);
+    padding:5px 7px;
+    box-shadow:1.5px 2px 0 rgba(0,0,0,0.18);
+    min-height:70px;
+  }
+  .step:nth-child(odd) .card{
+    border-radius:80px 8px 70px 8px / 8px 70px 8px 80px;
+    transform:rotate(-0.5deg);
+  }
+  .step:nth-child(even) .card{
+    border-radius:8px 70px 8px 80px / 70px 8px 80px 8px;
+    transform:rotate(0.5deg);
+  }
+  .num{
+    font-family:'Patrick Hand',cursive;
+    font-size:0.55rem;
+    color:#777;
+  }
+  .title{
+    font-family:'Patrick Hand',cursive;
+    font-size:0.66rem;
+    margin:1px 0 2px;
+    line-height:1.1;
+  }
+  .transform{
+    font-size:0.56rem;
+    color:#3a3a3a;
+    margin:0;
+    line-height:1.15;
+  }
+  .arrow-from{ color:#888; }
+  .arrow-to{ font-weight:700; }
+
+  .sources{
+    margin-top:14px;
+    text-align:center;
+  }
+  .sources h2{
+    font-family:'Patrick Hand',cursive;
+    font-size:0.72rem;
+    margin:0 0 6px;
+    transform:rotate(-0.6deg);
+  }
+  .notes-row{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .note{
+    position:relative;
+    width:96px;
+    padding:6px 7px 7px;
+    font-size:0.56rem;
+    border:1.2px solid var(--ink);
+    box-shadow:1.5px 2px 0 rgba(0,0,0,0.15);
+  }
+  .note::before{
+    content:"";
+    position:absolute;
+    top:-4px; left:50%;
+    width:7px; height:7px;
+    background:#b33;
+    border-radius:50%;
+    transform:translateX(-50%);
+    box-shadow:0 1px 1px rgba(0,0,0,0.4);
+  }
+  .note .label{
+    display:block;
+    font-family:'Patrick Hand',cursive;
+    font-size:0.6rem;
+  }
+  .note .tag{
+    display:block;
+    font-size:0.46rem;
+    color:#555;
+  }
+  .note.yellow{ background:#fff3b0; transform:rotate(-2deg); }
+  .note.pink  { background:#ffd8e0; transform:rotate(1.5deg); }
+  .note.blue  { background:#cfe8ff; transform:rotate(-1.2deg); }
+  .note.green { background:#d8f3d8; transform:rotate(2deg); }
+
+  footer{
+    text-align:center;
+    margin-top:16px;
+    font-size:0.5rem;
+    color:#888;
+  }
+</style>
+</head>
+<body>
+<div class="margin-line"></div>
+<div class="wrap">
+
+  <header>
+    <h1>Job Search — System Design</h1>
+    <p class="subtitle">10 primitives, in order</p>
+    <svg class="underline" viewBox="0 0 260 14" width="110" height="6">
+      <path d="M3 8 C 60 2, 120 14, 180 6 C 210 2, 235 10, 257 6" fill="none" stroke="#2b2b2b" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  </header>
+
+  <section class="flow">
+
+    <div class="flow-row">
+
+      <div class="step">
+        <div class="card">
+          <span class="num">1</span>
+          <h3 class="title">Discover Opportunities</h3>
+          <p class="transform"><span class="arrow-from">Unknown opps</span> → <span class="arrow-to">Known opps</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">2</span>
+          <h3 class="title">Evaluate Opportunities</h3>
+          <p class="transform"><span class="arrow-from">Known opps</span> → <span class="arrow-to">Prioritized opps</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">3</span>
+          <h3 class="title">Select Opportunities</h3>
+          <p class="transform"><span class="arrow-from">Prioritized opps</span> → <span class="arrow-to">Selected opps</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">4</span>
+          <h3 class="title">Prepare Applications</h3>
+          <p class="transform"><span class="arrow-from">Selected opps</span> → <span class="arrow-to">Ready apps</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">5</span>
+          <h3 class="title">Submit Applications</h3>
+          <p class="transform"><span class="arrow-from">Ready apps</span> → <span class="arrow-to">Submitted apps</span></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flow-row" style="margin-top:14px;">
+
+      <div class="step">
+        <div class="card">
+          <span class="num">6</span>
+          <h3 class="title">Manage Responses</h3>
+          <p class="transform"><span class="arrow-from">Submitted apps</span> → <span class="arrow-to">Active candidacies</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">7</span>
+          <h3 class="title">Prepare Interviews</h3>
+          <p class="transform"><span class="arrow-from">Active candidacies</span> → <span class="arrow-to">Interview-ready</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">8</span>
+          <h3 class="title">Complete Interviews</h3>
+          <p class="transform"><span class="arrow-from">Interview-ready</span> → <span class="arrow-to">Post-interview</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">9</span>
+          <h3 class="title">Evaluate Offers</h3>
+          <p class="transform"><span class="arrow-from">Post-interview</span> → <span class="arrow-to">Offer decisions</span></p>
+        </div>
+      </div>
+      <div class="h-connector"><svg viewBox="0 0 70 30" width="26" height="11"><path d="M4 15 C 18 10, 30 20, 40 14 C 50 10, 58 18, 64 15" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 15 L53 9 M64 15 L53 21" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+
+      <div class="step">
+        <div class="card">
+          <span class="num">10</span>
+          <h3 class="title">Finalize Employment</h3>
+          <p class="transform"><span class="arrow-from">Offer decisions</span> → <span class="arrow-to">Signed + start date</span></p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="sources">
+    <h2>External Sources</h2>
+    <div class="notes-row">
+      <div class="note yellow">
+        <span class="label">LinkedIn</span>
+        <span class="tag">Professional network</span>
+      </div>
+      <div class="note blue">
+        <span class="label">Gmail</span>
+        <span class="tag">Communication</span>
+      </div>
+      <div class="note green">
+        <span class="label">Google Calendar</span>
+        <span class="tag">Calendar</span>
+      </div>
+      <div class="note pink">
+        <span class="label">iMessage</span>
+        <span class="tag">Communication</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>hardcoded · no AI · just the plan</footer>
+
+</div>
+</body>
+</html>

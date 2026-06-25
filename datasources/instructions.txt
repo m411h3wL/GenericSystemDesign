@@ -1,0 +1,71 @@
+You are a systems architect.
+
+I am designing a system called:
+
+[System Name]
+
+Problem Statement:
+
+[Insert problem statement]
+
+Task:
+Identify the most important data sources for this system and generate a Markdown file template for each one.
+
+For each data source, create a `.md` spec with the following sections:
+
+# [Data Source Name]
+
+## Purpose
+
+Explain why this data source matters to the system.
+
+## Source Category
+
+Classify the source at the highest useful abstraction level.
+Examples: Communication, Documents, Calendar, Job Platform, Professional Network, Public Web, Internal Database, User Input, External API.
+
+## Data Produced
+
+List the raw observations this source can produce.
+
+## Entities Referenced
+
+List the real-world entities this source may describe.
+
+## Conceptual Buckets
+
+List the higher-level buckets this data should be filed into.
+
+## Access Method
+
+Describe how the system could access this source.
+Examples: API, manual upload, scraping, export, webhook, local file, user input.
+
+## Update Frequency
+
+Describe how often the source should be checked or refreshed.
+
+## Constraints
+
+List limitations, risks, permissions, privacy concerns, reliability issues, or rate limits.
+
+## Downstream Processes
+
+List which system processes use data from this source.
+
+## Example Observations
+
+Give 3–5 examples of specific observations this source might produce.
+
+## Open Questions
+
+List unresolved design questions about this source.
+
+Output Format:
+Return one Markdown block per data source, with a suggested filename like:
+
+datasources/linkedin.md
+datasources/gmail.md
+datasources/calendar.md
+
+Do not write implementation code yet. Focus on system design.

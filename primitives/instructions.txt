@@ -1,0 +1,23 @@
+Given the following problem statement, identify the smallest set of high-level, non-overlapping processes that completely describe the system as a chain of typed state transformations.
+
+Requirements:
+
+Each process should represent a major state transformation, not an implementation detail.
+Each process should have a single responsibility.
+Merge processes that perform the same conceptual transformation.
+Do not include functions, algorithms, APIs, or UI interactions.
+Do not decompose into sub-processes unless necessary.
+The set of processes should be collectively exhaustive and minimally redundant.
+Each process's Output must exactly match the next process's Input, forming an unbroken chain from the initial problem state to the final resolved state.
+
+For each process provide:
+
+Problem (the unresolved state that motivates this process)
+Input (the state this process consumes; must equal the previous process's Output)
+Transformation (Input → Output)
+Output (the state this process produces; must equal the next process's Input)
+Exit Condition (how to verify the transformation is complete)
+
+Problem Statement:
+
+[Insert problem statement here]
